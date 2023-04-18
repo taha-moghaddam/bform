@@ -17,10 +17,17 @@ class PatterFieldController extends BaseAdminController
 
     public function __construct()
     {
-        $this->pattern_id = request()->route('pattern_id');
-        $this->pattern = Pattern::findOrFail($this->pattern_id);
+        $patterId = request()->route('pattern_id');
+        if (\App::runningInConsole()) {
+            // To fix `artisan route:list` problem
+            $patterId ??= 0;
+        } else {
+            $this->pattern_id = $patterId;
+            $this->pattern = Pattern::findOrFail($patterId);
+        }
 
-        $this->title = __('bform::titles.PatternFields', ['pattern' => $this->pattern->name]);
+
+        $this->title = __('bform::titles.PatternFields', ['pattern' => $this->pattern->name ?? __('Pattern')]);
     }
 
     /**
@@ -84,8 +91,8 @@ class PatterFieldController extends BaseAdminController
         $form->text('default_value', __('bform::titles.Default value'));
         $form->switch('is_required', __('bform::titles.Is required'));
         $form->select('reference_field_id', __('bform::titles.Reference field'))
-        ->options(Field::pluck('name', 'id'))
-        ->help('در موقع بررسی، این فیلد به عنوان مرجع جهت تطبیق به ارزیاب نمایش داده می‌شود. برای مثال مرجع کد ملی می‌تواند کارت ملی باشد. به همین جهت مرجع باید از نوع تصویر باشد.');
+            ->options(Field::pluck('name', 'id'))
+            ->help('در موقع بررسی، این فیلد به عنوان مرجع جهت تطبیق به ارزیاب نمایش داده می‌شود. برای مثال مرجع کد ملی می‌تواند کارت ملی باشد. به همین جهت مرجع باید از نوع تصویر باشد.');
 
         $patternId = $this->pattern_id;
         $form->saving(function (Form $form) use ($patternId) {

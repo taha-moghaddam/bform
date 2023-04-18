@@ -28,7 +28,7 @@ class PatternController extends BaseAdminController
         $grid->column('id', __('bform::titles.Id'));
         $grid->column('name', __('bform::titles.Name'));
         $grid->column('fields', __('bform::titles.Fields'))->display(function () {
-            $route = route('bform.pattern.fields', ['pattern_id' => $this->id]);
+            $route = route('bform.pattern.fields.index', ['pattern_id' => $this->id]);
             return "<a href='$route' class='btn btn-xs btn-primary'>" .
                 "<i class='fa-regular fa-pen-field'></i> " . __('bform::titles.Fields') .
                 "</a>";

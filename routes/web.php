@@ -16,8 +16,8 @@ Route::group([
     $router->get('/', BFormController::class . '@index');
 
     $router->resource('patterns', PatternController::class);
-    $router->resource('pattern/{pattern_id}/fields', PatterFieldController::class)->names([
-        'index' => 'pattern.fields',
+    $router->resource('pattern/{pattern_id}/fields', PatterFieldController::class, ['as' => 'pattern'])->names([
+        'index' => 'pattern.fields.index',
     ]);
     $router->resource('forms', FormController::class);
     $router->resource('fields', FieldController::class);
