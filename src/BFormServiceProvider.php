@@ -11,15 +11,20 @@ class BFormServiceProvider extends ServiceProvider
      */
     public function boot(BForm $extension)
     {
-        if (! BForm::boot()) {
-            return ;
+        if (!BForm::boot()) {
+            return;
         }
+
+        $this->loadTranslationsFrom(__DIR__.'/../lang', 'bform');
 
         if ($views = $extension->views()) {
             $this->loadViewsFrom($views, 'bform');
         }
 
         if ($this->app->runningInConsole() && $assets = $extension->assets()) {
+
+            $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+
             $this->publishes(
                 [$assets => public_path('vendor/laravel-admin-ext/bform')],
                 'bform'
@@ -27,7 +32,7 @@ class BFormServiceProvider extends ServiceProvider
         }
 
         $this->app->booted(function () {
-            BForm::routes(__DIR__.'/../routes/web.php');
+            BForm::routes(__DIR__ . '/../routes/web.php');
         });
     }
 }
