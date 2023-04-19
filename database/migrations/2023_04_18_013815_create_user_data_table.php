@@ -17,10 +17,10 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->foreignId('field_id');
             $table->string('value');
-            $table->enum('review_status', ReviewStatus::values());
+            $table->enum('review_status', ReviewStatus::values())->default(ReviewStatus::PENDING->value);
             $table->timestamp('reviewed_at')->nullable();
-            $table->text('review_comment');
-            $table->foreignId('review_admin_id');
+            $table->text('review_comment')->nullable();
+            $table->foreignId('review_admin_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
