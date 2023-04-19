@@ -2,6 +2,7 @@
 
 namespace Bikaraan\BForm\Models;
 
+use Bikaraan\BForm\Enums\ReviewStatus;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -46,6 +47,12 @@ class UserData extends BaseModel
 {
     use SoftDeletes;
     use LogsActivity;
+
+    protected $fillable = ['field_id', 'user_id', 'value'];
+
+    protected $casts = [
+        'review_status' => ReviewStatus::class,
+    ];
 
     public function getActivitylogOptions(): LogOptions
     {

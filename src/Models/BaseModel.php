@@ -19,10 +19,13 @@ class BaseModel extends Model
     use HasFactory;
     use DefaultDatetimeFormat;
 
+    protected $prefix = 'bform_';
+
     public function __construct()
     {
         parent::__construct();
 
-        $this->table = config('admin.extensions.bform.config.db-prefix', 'bform_') . $this->getTable();
+        $this->prefix = config('admin.extensions.bform.config.db-prefix', 'bform_');
+        $this->table = $this->prefix . $this->getTable();
     }
 }
