@@ -2,9 +2,10 @@
 
 namespace Bikaraan\BForm\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\Pattern
@@ -41,5 +42,14 @@ class Pattern extends BaseModel
             ->logAll()
             ->logExcept(['updated_at'])
             ->logOnlyDirty();
+    }
+
+    /*
+     * Relations
+     */
+
+    public function fields(): BelongsToMany
+    {
+        return $this->belongsToMany(Field::class, $this->prefix . 'field_pattern')->withPivot(['is_required', 'default_value']);
     }
 }

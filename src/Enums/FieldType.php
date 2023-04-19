@@ -17,6 +17,15 @@ enum FieldType: string
         };
     }
 
+    public function func(): string
+    {
+        return match ($this) {
+            self::TEXT => 'text',
+            self::DATE => 'jdate',
+            self::IMAGE => 'filepond',
+        };
+    }
+
     public static function pluck()
     {
         $result = [];

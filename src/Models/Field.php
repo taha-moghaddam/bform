@@ -2,6 +2,7 @@
 
 namespace Bikaraan\BForm\Models;
 
+use Bikaraan\BForm\Enums\FieldType;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -43,6 +44,10 @@ class Field extends BaseModel
 {
     use SoftDeletes;
     use LogsActivity;
+
+    protected $casts = [
+        'type' => FieldType::class,
+    ];
 
     public function getActivitylogOptions(): LogOptions
     {

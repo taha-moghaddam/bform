@@ -30,4 +30,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Contribution extends BaseModel
 {
     use SoftDeletes;
+
+    /*
+     * Relations
+     */
+
+    public function form()
+    {
+        return $this->belongsTo(Form::class);
+    }
 }

@@ -26,15 +26,14 @@ class UserDataController extends BaseAdminController
         $grid = new Grid(new UserData());
 
         $grid->column('id', __('bform::titles.Id'));
-        $grid->column('user_id', __('bform::titles.User'));
-        $grid->column('field_id', __('bform::titles.Field'));
+        $grid->column('user.name', __('bform::titles.User'));
+        $grid->column('field.name', __('bform::titles.Field'));
         $grid->column('value', __('bform::titles.Value'));
-        $grid->column('review_status', __('bform::titles.Review status'));
+        $grid->column('review_status', __('bform::titles.Review status'))->display(fn() => $this->review_status->label());
         $grid->column('reviewed_at', __('bform::titles.Reviewed at'));
         $grid->column('review_comment', __('bform::titles.Review comment'));
         $grid->column('review_admin_id', __('bform::titles.Review admin'));
         $grid->column('created_at', __('bform::titles.Created at'));
-        $grid->column('updated_at', __('bform::titles.Updated at'));
 
         return $grid;
     }

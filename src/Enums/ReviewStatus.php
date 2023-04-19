@@ -35,6 +35,14 @@ enum ReviewStatus: string
         };
     }
 
+    public function label(): string
+    {
+        return "<label class='label label-{$this->class()}'>"
+            . "<i class='fa-regular {$this->icon()}'></i> "
+            . $this->fa()
+            . "</label>";
+    }
+
     public static function pluck()
     {
         $result = [];
