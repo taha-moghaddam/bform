@@ -2,12 +2,14 @@
 
 namespace Bikaraan\BForm\Forms;
 
-use Bikaraan\BForm\Models\Contribution;
-use Bikaraan\BForm\Models\ContributionData;
 use Illuminate\Http\Request;
 use Encore\Admin\Widgets\Form;
 use Encore\Admin\Facades\Admin;
+use Bikaraan\BForm\Models\Field;
+use Bikaraan\BForm\Enums\FieldType;
 use Bikaraan\BForm\Models\UserData;
+use Bikaraan\BForm\Models\Contribution;
+use Bikaraan\BForm\Models\ContributionData;
 use Bikaraan\BForm\Models\Form as ModelsForm;
 
 class ContributionForm extends Form
@@ -18,6 +20,8 @@ class ContributionForm extends Form
      * @var  string
      */
     public $title = 'Form';
+
+    const FILE_UPLOAD_DIR = 'bform' . DIRECTORY_SEPARATOR . 'user-data';
 
     protected ModelsForm $formModel;
 
@@ -54,16 +58,15 @@ class ContributionForm extends Form
 
         foreach ($this->formModel->pattern->fields as $field) {
 
-            $input = $request->input('field_' . $field->id);
-            if (empty($input)) {
-                continue;
-            }
+            $value = $this->parseInput($request, $field);
+
+            if (empty($value)) continue;
 
             // Find equivalent value in user-data for this field or create new one
             $userData = UserData::firstOrCreate([
                 'field_id' => $field->id,
                 'user_id' => Admin::user()->id,
-                'value' => $input,
+                'value' => $value,
             ]);
 
             // Save user-data on contribution data
@@ -71,7 +74,6 @@ class ContributionForm extends Form
             $contributionData->contribution_id = $contribution->id;
             $contributionData->user_data_id = $userData->id;
             $contributionData->save();
-
         }
 
         admin_toastr(__('bform::msg.Data saved successfully.'));
@@ -98,6 +100,10 @@ class ContributionForm extends Form
             if (!empty($field->hint)) {
                 $f->help($field->hint);
             }
+
+            if ($field->type === FieldType::IMAGE) {
+                $f->disk('local')->dir(self::FILE_UPLOAD_DIR);
+            }
         }
     }
 
@@ -113,5 +119,45 @@ class ContributionForm extends Form
             'email'      => 'John.Doe@gmail.com',
             'created_at' => now(),
         ];
+    }
+
+    /**
+     * Prase input to value
+     *
+     * @param Request $request
+     * @param Field $field
+     * @return string Field value
+     */
+    protected function parseInput(Request $request, Field $field): string
+    {
+        $inputName = "field_{$field->id}";
+
+        if (!$request->has($inputName)) return null;
+
+        return match ($field->type) {
+            FieldType::IMAGE => $this->handleImage($request, $inputName, $field),
+            default => $request->input($inputName),
+        };
+    }
+
+    /**
+     * Handle image on parsing inputs
+     *
+     * @param Request $request
+     * @param string $inputName
+     * @param Field $fieldName
+     * @return string Uploaded file address
+     */
+    protected function handleImage(Request $request, string $inputName, Field $field): string
+    {
+        if (!$request->hasFile($inputName)) return $request->input($inputName);
+
+        $request->validate([$inputName => 'file']);
+
+        $fileNameToStore = Admin::user()->id . "-{$field->id}-" . time() . '-' . random_int(1, 9);
+
+        $request->file($inputName)->storeAs(self::FILE_UPLOAD_DIR, $fileNameToStore);
+
+        return $fileNameToStore;
     }
 }
