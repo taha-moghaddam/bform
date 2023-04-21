@@ -1,8 +1,8 @@
 {
     "name": "laravel-admin-ext/bform",
-    "description": "Dynamic form builder with form-validation-panel",
+    "description": "Dynamic form builder with form-validation panel.",
     "type": "library",
-    "keywords": ["laravel-admin", "extension", "bikaraan"],
+    "keywords": ["laravel-admin", "extension", "bikaraan", "form-builder"],
     "homepage": "https://github.com/laravel-admin-ext/bform",
     "license": "MIT",
     "authors": [
@@ -15,13 +15,18 @@
         {
             "type": "vcs",
             "url": "https://github.com/taha-moghaddam/grid-sortable"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/taha-moghaddam/bzones"
         }
     ],
     "require": {
         "php": ">=8.1",
         "encore/laravel-admin": "^1.6|dev-master@dev",
         "spatie/laravel-activitylog": "^4.7",
-        "laravel-admin-ext/grid-sortable": "dev-master@dev"
+        "laravel-admin-ext/grid-sortable": "dev-master@dev",
+        "laravel-admin-ext/bzones": "dev-master@dev"
     },
     "autoload": {
         "psr-4": {
