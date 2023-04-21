@@ -11,10 +11,17 @@
             "email": "m5taha5m@gmail.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/taha-moghaddam/grid-sortable"
+        }
+    ],
     "require": {
         "php": ">=8.1",
-        "encore/laravel-admin": "^1.6|dev-master",
-        "spatie/laravel-activitylog": "^4.7"
+        "encore/laravel-admin": "^1.6|dev-master@dev",
+        "spatie/laravel-activitylog": "^4.7",
+        "laravel-admin-ext/grid-sortable": "dev-master@dev"
     },
     "autoload": {
         "psr-4": {

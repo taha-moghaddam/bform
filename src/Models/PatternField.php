@@ -5,6 +5,8 @@ namespace Bikaraan\BForm\Models;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\EloquentSortable\Sortable;
+use Spatie\EloquentSortable\SortableTrait;
 
 /**
  * App\Models\PatternField
@@ -39,10 +41,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|PatternField withoutTrashed()
  * @mixin \Eloquent
  */
-class PatternField extends BaseModel
+class PatternField extends BaseModel implements Sortable
 {
     use SoftDeletes;
     use LogsActivity;
+    use SortableTrait;
+
+    public $sortable = [
+        'order_column_name' => 'order',
+        'sort_when_creating' => true,
+    ];
 
     protected $table = 'field_pattern';
 

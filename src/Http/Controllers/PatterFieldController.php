@@ -41,11 +41,12 @@ class PatterFieldController extends BaseAdminController
 
         $grid->model()->where('pattern_id', $this->pattern_id);
 
+        $grid->sortable();
+
         $grid->column('id', __('bform::titles.Id'));
         $grid->column('field.name', __('bform::titles.Field'));
         $grid->column('default_value', __('bform::titles.Default value'));
         $grid->column('is_required', __('bform::titles.Is required'))->bool();
-        $grid->column('order', __('bform::titles.Order'));
         $grid->column('reference_field.name', __('bform::titles.Reference field'));
         $grid->column('created_at', __('bform::titles.Created at'));
         $grid->column('updated_at', __('bform::titles.Updated at'));
