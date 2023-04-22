@@ -101,8 +101,12 @@ class ContributionForm extends Form
                 $f->help($field->hint);
             }
 
-            if ($field->type === FieldType::IMAGE) {
-                $f->disk('local')->dir(self::FILE_UPLOAD_DIR);
+            switch ($field->type) {
+                case FieldType::IMAGE:
+                    $f->disk('local')->dir(self::FILE_UPLOAD_DIR);
+                    break;
+                case FieldType::ZONE:
+                    $f->ajax(route('bzones.search'));
             }
         }
     }
