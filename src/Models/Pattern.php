@@ -50,6 +50,9 @@ class Pattern extends BaseModel
 
     public function fields(): BelongsToMany
     {
-        return $this->belongsToMany(Field::class, $this->prefix . 'field_pattern')->withPivot(['is_required', 'default_value']);
+        return $this->belongsToMany(Field::class, $this->prefix . 'field_pattern')
+            ->whereNull($this->prefix . 'field_pattern.deleted_at')
+            ->withPivot(['is_required', 'default_value'])
+            ->orderBy('order');
     }
 }
