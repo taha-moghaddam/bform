@@ -2,9 +2,11 @@
 
 namespace Bikaraan\BForm\Models;
 
+use Encore\Admin\Facades\Admin;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 /**
  * App\Models\Form
@@ -12,6 +14,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $id
  * @property int $pattern_id
  * @property string $name
+ * @property bool $active
+ * @property int $contribution_limit
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -24,6 +28,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Form whereActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form wherePatternId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereUpdatedAt($value)
@@ -52,5 +57,20 @@ class Form extends BaseModel
     public function pattern()
     {
         return $this->belongsTo(Pattern::class);
+    }
+
+    /*
+     * Accessors
+     */
+
+    protected function getHasReachedLimitAttribute()
+    {
+        if (empty($this->contribution_limit)) return false;
+
+        $currentContributionsCount = Contribution::whereFormId($this->id)
+            ->whereUserId(Admin::user()->id)
+            ->count();
+
+        return $this->contribution_limit <= $currentContributionsCount;
     }
 }

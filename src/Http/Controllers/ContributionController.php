@@ -31,7 +31,8 @@ class ContributionController extends BaseAdminController
     {
         $this->title = 'Dashboard';
         $grid = $this->grid();
-        $forms = ModelsForm::all();
+        $forms = ModelsForm::whereActive(true)->get();
+
         return $content
             ->title($this->title())
             ->description(__('bform::titles.Forms'))
@@ -50,9 +51,11 @@ class ContributionController extends BaseAdminController
     {
         $grid = new Grid(new Contribution());
 
-        $grid->column('id', __('bform::titles.Id'));
-        $grid->column('form.name', __('bform::titles.Form'));
-        $grid->column('created_at', __('bform::titles.Created at'));
+        $grid->model()->orderByDesc('id');
+
+        $grid->column('id', __('bform::titles.Id'))->sortable();
+        $grid->column('form.name', __('bform::titles.Form'))->sortable();
+        $grid->column('created_at', __('bform::titles.Created at'))->sortable();
 
         $grid->disableCreateButton()
             ->disableBatchActions()

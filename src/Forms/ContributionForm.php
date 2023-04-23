@@ -12,6 +12,7 @@ use Bikaraan\BForm\Models\UserData;
 use Bikaraan\BForm\Models\Contribution;
 use Bikaraan\BForm\Models\ContributionData;
 use Bikaraan\BForm\Models\Form as ModelsForm;
+use Bikaraan\BForm\Services\ContributionService;
 
 class ContributionForm extends Form
 {
@@ -49,7 +50,17 @@ class ContributionForm extends Form
      */
     public function handle(Request $request)
     {
-        // TODO: Prevent multiple contribution in a form
+        // Check is form active
+        if (!$this->formModel->active) {
+            admin_error(__('bform::msg.Form has deactivated!'));
+            return back();
+        }
+
+        // Prevent multiple contribution in a form
+        if ($this->formModel->has_reached_limit) {
+            admin_error(__('bform::msg.You have reached contribution limit!'));
+            return back();
+        }
 
         // Create new contribution
         $contribution = new Contribution();
@@ -84,7 +95,7 @@ class ContributionForm extends Form
 
         admin_toastr(__('bform::msg.Data saved successfully.'));
 
-        return back();
+        return redirect()->route('bform.contributions.index');
     }
 
     /**

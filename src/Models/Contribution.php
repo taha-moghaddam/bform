@@ -2,6 +2,7 @@
 
 namespace Bikaraan\BForm\Models;
 
+use Bikaraan\BForm\Enums\ReviewStatus;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -10,6 +11,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $id
  * @property int $user_id
  * @property int $form_id
+ * @property ReviewStatus $review_status
+ * @property \Carbon\Carbon $reviewed_at
+ * @property string $review_comment
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -23,6 +27,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Contribution whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contribution whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contribution whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Contribution whereReviewStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Contribution withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Contribution withoutTrashed()
  * @mixin \Eloquent
@@ -30,6 +35,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Contribution extends BaseModel
 {
     use SoftDeletes;
+
+    protected $casts = [
+        'review_status' => ReviewStatus::class,
+    ];
 
     /*
      * Relations
