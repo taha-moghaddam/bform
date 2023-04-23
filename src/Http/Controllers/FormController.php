@@ -36,8 +36,8 @@ class FormController extends BaseAdminController
         $grid->column('updated_at', __('bform::titles.Updated at'));
 
         $grid->quickCreate(function (Grid\Tools\QuickCreate $create) {
-            $create->select('pattern', __('bform::titles.Pattern'))->options(Pattern::pluck('name', 'id'));
-            $create->integer('name', __('bform::titles.Name'));
+            $create->select('pattern_id', __('bform::titles.Pattern'))->options(Pattern::pluck('name', 'id'));
+            $create->text('name', __('bform::titles.Name'));
         });
 
         return $grid;

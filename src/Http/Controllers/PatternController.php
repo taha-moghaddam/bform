@@ -36,6 +36,10 @@ class PatternController extends BaseAdminController
         $grid->column('created_at', __('bform::titles.Created at'));
         $grid->column('updated_at', __('bform::titles.Updated at'));
 
+        $grid->quickCreate(function (Grid\Tools\QuickCreate $create) {
+            $create->text('name', __('bform::titles.Name'));
+        });
+
         return $grid;
     }
 
