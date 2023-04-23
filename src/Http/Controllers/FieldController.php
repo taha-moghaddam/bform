@@ -76,10 +76,11 @@ class FieldController extends BaseAdminController
     {
         $form = new Form(new Field());
 
-        $form->text('name', __('bform::titles.Name'));
-        $form->select('type', __('bform::titles.Type'))->options(FieldType::pluck());
+        $form->text('name', __('bform::titles.Name'))->required();
+        $form->select('type', __('bform::titles.Type'))->options(FieldType::pluck())->required();
         $form->number('lifetime', __('bform::titles.Lifetime'))
-            ->help('واحد روز می‌باشد. برای اعتبار دائم -۱ وارد کنید.');
+            ->help('واحد روز می‌باشد. برای اعتبار دائم -۱ وارد کنید.')
+            ->required();
         $form->text('default_value', __('bform::titles.Default value'));
         $form->text('rules', __('bform::titles.Rules'));
         $form->text('hint', __('bform::titles.Hint'));
