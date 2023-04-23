@@ -2,6 +2,7 @@
 
 namespace Bikaraan\BForm\Http\Controllers;
 
+use Bikaraan\BForm\Enums\FieldFillOut;
 use Bikaraan\BForm\Models\Field;
 use Bikaraan\BForm\Models\Pattern;
 use Bikaraan\BForm\Models\PatternField;
@@ -70,6 +71,7 @@ class PatterFieldController extends BaseAdminController
         $show->field('default_value', __('bform::titles.Default value'));
         $show->field('is_required', __('bform::titles.Is required'));
         $show->field('order', __('bform::titles.Order'));
+        $show->field('fill_out', __('bform::titles.Fill out'))->using(FieldFillOut::pluck());
         $show->field('reference_field_id', __('bform::titles.Reference field id'));
         $show->field('created_at', __('bform::titles.Created at'));
         $show->field('updated_at', __('bform::titles.Updated at'));
@@ -94,6 +96,9 @@ class PatterFieldController extends BaseAdminController
         $form->select('reference_field_id', __('bform::titles.Reference field'))
             ->options(Field::pluck('name', 'id'))
             ->help('در موقع بررسی، این فیلد به عنوان مرجع جهت تطبیق به ارزیاب نمایش داده می‌شود. برای مثال مرجع کد ملی می‌تواند کارت ملی باشد. به همین جهت مرجع باید از نوع تصویر باشد.');
+        $form->select('fill_out', __('bform::titles.Fill out'))
+            ->options(FieldFillOut::pluck())
+            ->help('با پر شدن این فیلد چه چیز به طور خودکار به روز شود؟');
 
         $patternId = $this->pattern_id;
         $form->saving(function (Form $form) use ($patternId) {

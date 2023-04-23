@@ -2,6 +2,7 @@
 
 namespace Bikaraan\BForm\Models;
 
+use Bikaraan\BForm\Enums\FieldFillOut;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,6 +19,7 @@ use Spatie\EloquentSortable\SortableTrait;
  * @property int $is_required
  * @property int $order
  * @property int|null $reference_field_id Source of truth of this field in review-panel
+ * @property string|null $fill_out This field fill-out this column
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -50,6 +52,10 @@ class PatternField extends BaseModel implements Sortable
     public $sortable = [
         'order_column_name' => 'order',
         'sort_when_creating' => true,
+    ];
+
+    protected $casts = [
+        'fill_out' => FieldFillOut::class,
     ];
 
     protected $table = 'field_pattern';

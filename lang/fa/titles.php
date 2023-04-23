@@ -24,6 +24,7 @@ return [
     'Review admin' => 'ارزیاب',
     'Reference field' => 'مرجع',
     'Is required' => 'الزامی',
+    'Fill out' => 'متصل به',
     'Order' => 'ترتیب',
     'Request' => 'درخواست',
     'Created at' => 'زمان ثبت',

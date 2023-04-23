@@ -2,6 +2,7 @@
 
 namespace Bikaraan\BForm\Forms;
 
+use Bikaraan\BForm\Enums\FieldFillOut;
 use Illuminate\Http\Request;
 use Encore\Admin\Widgets\Form;
 use Encore\Admin\Facades\Admin;
@@ -74,6 +75,11 @@ class ContributionForm extends Form
             $contributionData->contribution_id = $contribution->id;
             $contributionData->user_data_id = $userData->id;
             $contributionData->save();
+
+            // Update related fill-out
+            if ($field->pivot->fill_out) {
+                FieldFillOut::tryFrom($field->pivot->fill_out)?->update($value);
+            }
         }
 
         admin_toastr(__('bform::msg.Data saved successfully.'));
@@ -132,7 +138,7 @@ class ContributionForm extends Form
      * @param Field $field
      * @return string Field value
      */
-    protected function parseInput(Request $request, Field $field): string
+    protected function parseInput(Request $request, Field $field): ?string
     {
         $inputName = "field_{$field->id}";
 

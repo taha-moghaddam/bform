@@ -2,6 +2,7 @@
 
 namespace Bikaraan\BForm\Models;
 
+use Bikaraan\BForm\Enums\FieldFillOut;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -52,7 +53,7 @@ class Pattern extends BaseModel
     {
         return $this->belongsToMany(Field::class, $this->prefix . 'field_pattern')
             ->whereNull($this->prefix . 'field_pattern.deleted_at')
-            ->withPivot(['is_required', 'default_value'])
+            ->withPivot(['is_required', 'default_value', 'reference_field_id', 'fill_out'])
             ->orderBy('order');
     }
 }
