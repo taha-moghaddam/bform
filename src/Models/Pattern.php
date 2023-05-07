@@ -36,6 +36,10 @@ class Pattern extends BaseModel
     use SoftDeletes;
     use LogsActivity;
 
+    protected $casts = [
+        'title_fields_id' => 'object',
+    ];
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -43,6 +47,17 @@ class Pattern extends BaseModel
             ->logAll()
             ->logExcept(['updated_at'])
             ->logOnlyDirty();
+    }
+
+    /*
+     * Accessors
+     */
+
+    // title_fields_name
+    public function getTitleFieldsNameAttribute()
+    {
+        if (empty($this->title_fields_id)) return;
+        return Field::whereIn('id', $this->title_fields_id)?->pluck('name')?->join('، ');
     }
 
     /*

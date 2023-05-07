@@ -68,6 +68,8 @@ class ContributionForm extends Form
         $contribution->form_id = $this->formModel->id;
         $contribution->save();
 
+        $titleFieldsArray = [];
+
         foreach ($this->formModel->pattern->fields as $field) {
 
             $value = $this->parseInput($request, $field);
@@ -91,7 +93,16 @@ class ContributionForm extends Form
             if ($field->pivot->fill_out) {
                 FieldFillOut::tryFrom($field->pivot->fill_out)?->update($value);
             }
+
+            // Fill contribution-title
+            if (in_array($field->id, $this->formModel->pattern->title_fields_id)) {
+                $titleFieldsArray[] = $value;
+            }
         }
+
+        // Update contribution title
+        $contribution->title = implode(' - ', $titleFieldsArray);
+        $contribution->save();
 
         admin_toastr(__('bform::msg.Data saved successfully.'));
 

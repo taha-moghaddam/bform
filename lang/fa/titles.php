@@ -2,6 +2,7 @@
 
 return [
     'Id' => '#',
+    'Title' => 'عنوان',
     'Name' => 'نام',
     'Dashboard' => 'پیشخان',
     'Data' => 'اطلاعات',
@@ -24,6 +25,7 @@ return [
     'Review comment' => 'نظر ارزیاب',
     'Review admin' => 'ارزیاب',
     'Reference fields' => 'مراجع',
+    'Title fields' => 'فیلدهای عنوان',
     'Is required' => 'الزامی',
     'Fill out' => 'متصل به',
     'Order' => 'ترتیب',

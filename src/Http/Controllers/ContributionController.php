@@ -55,6 +55,7 @@ class ContributionController extends BaseAdminController
 
         $grid->column('id', __('bform::titles.Id'))->sortable();
         $grid->column('form.name', __('bform::titles.Form'))->sortable();
+        $grid->column('title', __('bform::titles.Title'))->sortable();
         $grid->column('created_at', __('bform::titles.Created at'))->sortable();
 
         $grid->disableCreateButton()
