@@ -3,6 +3,7 @@
 namespace Bikaraan\BForm\Http\Controllers;
 
 use Bikaraan\BForm\Enums\FieldFillOut;
+use Bikaraan\BForm\Enums\FieldType;
 use Bikaraan\BForm\Models\Field;
 use Bikaraan\BForm\Models\Pattern;
 use Bikaraan\BForm\Models\PatternField;
@@ -48,7 +49,7 @@ class PatterFieldController extends BaseAdminController
         $grid->column('field.name', __('bform::titles.Field'));
         $grid->column('default_value', __('bform::titles.Default value'));
         $grid->column('is_required', __('bform::titles.Is required'))->bool();
-        $grid->column('reference_field.name', __('bform::titles.Reference field'));
+        $grid->column('reference_fields_id', __('bform::titles.Reference field'));
         $grid->column('created_at', __('bform::titles.Created at'));
         $grid->column('updated_at', __('bform::titles.Updated at'));
 
@@ -72,7 +73,7 @@ class PatterFieldController extends BaseAdminController
         $show->field('is_required', __('bform::titles.Is required'));
         $show->field('order', __('bform::titles.Order'));
         $show->field('fill_out', __('bform::titles.Fill out'))->using(FieldFillOut::pluck());
-        $show->field('reference_field_id', __('bform::titles.Reference field id'));
+        $show->field('reference_fields_id', __('bform::titles.Reference field id'));
         $show->field('created_at', __('bform::titles.Created at'));
         $show->field('updated_at', __('bform::titles.Updated at'));
         $show->field('deleted_at', __('bform::titles.Deleted at'));
@@ -93,8 +94,9 @@ class PatterFieldController extends BaseAdminController
         $form->select('field_id', __('bform::titles.Field'))->options(Field::pluck('name', 'id'))->required();
         $form->text('default_value', __('bform::titles.Default value'));
         $form->switch('is_required', __('bform::titles.Is required'));
-        $form->select('reference_field_id', __('bform::titles.Reference field'))
-            ->options(Field::pluck('name', 'id'))
+        $form->tags('reference_fields_id', __('bform::titles.Reference field'))
+            ->setAsJSON()
+            ->options(Field::where('type', '!=', FieldType::IMAGE)->pluck('name', 'id'))
             ->help('در موقع بررسی، این فیلد به عنوان مرجع جهت تطبیق به ارزیاب نمایش داده می‌شود. برای مثال مرجع کد ملی می‌تواند کارت ملی باشد. به همین جهت مرجع باید از نوع تصویر باشد.');
         $form->select('fill_out', __('bform::titles.Fill out'))
             ->options(FieldFillOut::pluck())

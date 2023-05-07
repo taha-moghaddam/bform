@@ -18,7 +18,7 @@ use Spatie\EloquentSortable\SortableTrait;
  * @property string|null $default_value
  * @property int $is_required
  * @property int $order
- * @property int|null $reference_field_id Source of truth of this field in review-panel
+ * @property array|null $reference_fields_id Source of truth of this field in review-panel
  * @property string|null $fill_out This field fill-out this column
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -76,10 +76,5 @@ class PatternField extends BaseModel implements Sortable
     public function field()
     {
         return $this->belongsTo(Field::class);
-    }
-
-    public function reference_field()
-    {
-        return $this->belongsTo(Field::class, 'reference_field_id');
     }
 }
