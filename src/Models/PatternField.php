@@ -2,12 +2,14 @@
 
 namespace Bikaraan\BForm\Models;
 
-use Bikaraan\BForm\Enums\FieldFillOut;
 use Spatie\Activitylog\LogOptions;
+use Spatie\EloquentSortable\Sortable;
+use Bikaraan\BForm\Enums\FieldFillOut;
+use Spatie\EloquentSortable\SortableTrait;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\EloquentSortable\Sortable;
-use Spatie\EloquentSortable\SortableTrait;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Collection;
 
 /**
  * App\Models\PatternField
@@ -56,6 +58,7 @@ class PatternField extends BaseModel implements Sortable
 
     protected $casts = [
         'fill_out' => FieldFillOut::class,
+        'reference_fields_id' => 'object',
     ];
 
     protected $table = 'field_pattern';
@@ -70,8 +73,24 @@ class PatternField extends BaseModel implements Sortable
     }
 
     /*
+     * Accessors
+     */
+
+    // reference_fields_name
+    public function getReferenceFieldsNameAttribute()
+    {
+        if (empty($this->reference_fields_id)) return;
+        return Field::whereIn('id', $this->reference_fields_id)?->pluck('name')?->join('، ');
+    }
+
+    /*
      * Relations
      */
+
+    public function pattern()
+    {
+        return $this->belongsTo(Pattern::class);
+    }
 
     public function field()
     {

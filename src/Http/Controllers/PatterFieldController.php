@@ -49,7 +49,8 @@ class PatterFieldController extends BaseAdminController
         $grid->column('field.name', __('bform::titles.Field'));
         $grid->column('default_value', __('bform::titles.Default value'));
         $grid->column('is_required', __('bform::titles.Is required'))->bool();
-        $grid->column('reference_fields_id', __('bform::titles.Reference field'));
+        $grid->column('reference_fields_name', __('bform::titles.Reference fields'))
+            ->display(fn () => $this->reference_fields_name);
         $grid->column('created_at', __('bform::titles.Created at'));
         $grid->column('updated_at', __('bform::titles.Updated at'));
 
@@ -67,13 +68,13 @@ class PatterFieldController extends BaseAdminController
         $show = new Show(PatternField::findOrFail($id));
 
         $show->field('id', __('bform::titles.Id'));
-        $show->field('pattern_id', __('bform::titles.Pattern id'));
-        $show->field('field_id', __('bform::titles.Field id'));
+        $show->field('pattern.name', __('bform::titles.Pattern'));
+        $show->field('field.name', __('bform::titles.Field'));
         $show->field('default_value', __('bform::titles.Default value'));
-        $show->field('is_required', __('bform::titles.Is required'));
+        $show->field('is_required', __('bform::titles.Is required'))->bool();
         $show->field('order', __('bform::titles.Order'));
         $show->field('fill_out', __('bform::titles.Fill out'))->using(FieldFillOut::pluck());
-        $show->field('reference_fields_id', __('bform::titles.Reference field id'));
+        $show->field('reference_fields_name', __('bform::titles.Reference fields'));
         $show->field('created_at', __('bform::titles.Created at'));
         $show->field('updated_at', __('bform::titles.Updated at'));
         $show->field('deleted_at', __('bform::titles.Deleted at'));
@@ -94,8 +95,7 @@ class PatterFieldController extends BaseAdminController
         $form->select('field_id', __('bform::titles.Field'))->options(Field::pluck('name', 'id'))->required();
         $form->text('default_value', __('bform::titles.Default value'));
         $form->switch('is_required', __('bform::titles.Is required'));
-        $form->tags('reference_fields_id', __('bform::titles.Reference field'))
-            ->setAsJSON()
+        $form->multipleSelect('reference_fields_id', __('bform::titles.Reference fields'))
             ->options(Field::where('type', '!=', FieldType::IMAGE)->pluck('name', 'id'))
             ->help('در موقع بررسی، این فیلد به عنوان مرجع جهت تطبیق به ارزیاب نمایش داده می‌شود. برای مثال مرجع کد ملی می‌تواند کارت ملی باشد. به همین جهت مرجع باید از نوع تصویر باشد.');
         $form->select('fill_out', __('bform::titles.Fill out'))

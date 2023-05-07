@@ -23,7 +23,7 @@ return [
     'Reviewed at' => 'زمان ارزیابی',
     'Review comment' => 'نظر ارزیاب',
     'Review admin' => 'ارزیاب',
-    'Reference field' => 'مرجع',
+    'Reference fields' => 'مراجع',
     'Is required' => 'الزامی',
     'Fill out' => 'متصل به',
     'Order' => 'ترتیب',
