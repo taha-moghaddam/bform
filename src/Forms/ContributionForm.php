@@ -106,7 +106,8 @@ class ContributionForm extends Form
         $this->hidden('form_id')->default($this->formModel->id);
 
         foreach ($this->formModel->pattern->fields as $field) {
-            $f = $this->{$field->type->func()}('field_' . $field->id, $field->name);
+            $f = $this->{$field->type->func()}('field_' . $field->id, $field->name)
+                ->rules($field->rules);
 
             if ($field->pivot->is_required) {
                 $f->required();
