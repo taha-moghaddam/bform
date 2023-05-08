@@ -95,8 +95,10 @@ class ContributionForm extends Form
             }
 
             // Fill contribution-title
-            if (in_array($field->id, $this->formModel->pattern->title_fields_id)) {
-                $titleFieldsArray[] = $value;
+            if (!empty($titleFieldsId = $this->formModel->pattern->title_fields_id)) {
+                if (in_array($field->id, $titleFieldsId)) {
+                    $titleFieldsArray[] = $value;
+                }
             }
         }
 
