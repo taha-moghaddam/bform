@@ -136,8 +136,6 @@ class ContributionForm extends Form
                 case FieldType::IMAGE:
                     $f->disk('local')->dir(self::FILE_UPLOAD_DIR);
                     break;
-                case FieldType::ZONE:
-                    $f->ajax(route('bzones.search'));
             }
         }
     }

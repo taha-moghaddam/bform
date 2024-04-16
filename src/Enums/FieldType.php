@@ -7,7 +7,6 @@ enum FieldType: string
     case TEXT = 'TEXT';
     case DATE = 'DATE';
     case IMAGE = 'IMAGE';
-    case ZONE = 'ZONE';
 
     public function fa(): string
     {
@@ -15,7 +14,6 @@ enum FieldType: string
             self::TEXT => 'متن',
             self::DATE => 'تاریخ',
             self::IMAGE => 'تصویر',
-            self::ZONE => 'منطقه',
         };
     }
 
@@ -25,7 +23,6 @@ enum FieldType: string
             self::TEXT => 'text',
             self::DATE => 'jdate',
             self::IMAGE => 'filepond',
-            self::ZONE => 'select',
         };
     }
 
